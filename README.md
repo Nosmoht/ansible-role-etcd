@@ -1,31 +1,36 @@
-Role Name
+Etcd
 =========
 
-A brief description of the role goes here.
+Ansible role to install Etcd and set key/values.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Ansible >= 1.2
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Name | Description | Default value |
+|:-----  | :----- | :----- |
+| etcd_git_repository | Url to Etcd Git Repository file | git@github.com:coreos/etcd.git |
+| etcd_target_directory | Directory where to checkout Etcd and run the build command | /opt/etcd |
+| etcd_bin_directory | Path where binaries files are build | /opt/etcd/bin
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Git must be installed on the system.
 
 Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
+    - hosts: 127.0.0.1
+      connection: local
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: etcd }
 
 License
 -------
@@ -34,5 +39,6 @@ BSD
 
 Author Information
 ------------------
+[Thomas Krahn]
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+[Thomas Krahn]: mailto:ntbc@gmx.net
