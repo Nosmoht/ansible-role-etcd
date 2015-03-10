@@ -1,4 +1,9 @@
 ---
+- name: Ensure target directory exists
+  file:
+    dest: '{{ etcd_target_directory }}'
+    state: directory
+
 - name: Checkout Git repo
   git:
     repo: '{{ etcd_git_repository }}'
