@@ -1,6 +1,7 @@
 ---
-etcd_git_repository: git@github.com:coreos/etcd.git
-etcd_target_directory: /opt/etcd
 etcd_bin_directory: '{{ etcd_target_directory }}/bin'
 etcd_etcd_binary_file_name: etcd
 etcd_etcdctl_binary_file_name: etcdctl
+etcd_git_repository: git@github.com:coreos/etcd.git
+etcd_install: true
+etcd_target_directory: /opt/etcd
