@@ -13,9 +13,10 @@ Role Variables
 
 | Name | Description | Default value |
 |:-----  | :----- | :----- |
-| etcd_git_repository | Url to Etcd Git Repository file | git@github.com:coreos/etcd.git |
-| etcd_target_directory | Directory where to checkout Etcd and run the build command | /opt/etcd |
 | etcd_bin_directory | Path where binaries files are build | /opt/etcd/bin
+| etcd_git_repository | Url to Etcd Git Repository file | git@github.com:coreos/etcd.git |
+| etcd_install | Boolean to define if installation should be done | true |
+| etcd_target_directory | Directory where to checkout Etcd and run the build command | /opt/etcd |
 
 Dependencies
 ------------
@@ -25,7 +26,7 @@ Git must be installed on the system.
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Install Etcd on local machine into /opt/etcd
 
     - hosts: 127.0.0.1
       connection: local
