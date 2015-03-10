@@ -1,0 +1,19 @@
+---
+- name: Checkout Git repo
+  git:
+    repo: '{{ etcd_git_repository }}'
+    dest: '{{ etcd_target_directory }}'
+
+- name: Check if binary is build already
+  stat:
+    path: '{{ etcd_target_directory }}/{{ etcd_etcd_binary_file_name }}'
+  register: etcd_binary_file
+
+- debug:
+    var: etcd_binary_file
+
+- name: Build binaries
+  shell: '{{ etcd_target_directory }}/build'
+  args:
+    chdir: '{{ etcd_target_directory }}'
+  when: not etcd_binary_file.stat.exists
