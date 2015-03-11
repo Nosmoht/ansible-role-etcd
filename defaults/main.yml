@@ -2,6 +2,10 @@
 etcd_target_directory: '{{ lookup(''env'', ''HOME'') }}/etcd'
 etcd_bin_directory: '{{ etcd_target_directory }}/bin'
 etcd_etcd_binary_file_name: etcd
+etcd_etcd_binary_file: '{{ etcd_bin_directory }}/{{ etcd_etcd_binary_file_name }}'
 etcd_etcdctl_binary_file_name: etcdctl
+etcd_etcdctl_binary_file: '{{ etcd_bin_directory }}/{{ etcd_etcdctl_binary_file_name }}'
 etcd_git_repository: https://github.com/coreos/etcd.git
 etcd_install: true
+etcd_install_create_symlink: true
+etcd_install_symlink_path: /usr/local/bin
