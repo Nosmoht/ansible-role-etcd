@@ -21,3 +21,19 @@
   args:
     chdir: '{{ etcd_target_directory }}'
   when: not etcd_binary_file.stat.exists or etcd_git_result.changed
+
+- name: Ensure symlink to etcd binary
+  sudo: true
+  file:
+    src: '{{ etcd_etcd_binary_file }}'
+    path: '{{ etcd_install_symlink_path }}/{{ etcd_etcd_binary_file_name }}'
+    state: link
+  when: etcd_install_create_symlink
+
+- name: Ensure symlink to etcdctl binary
+  sudo: true
+  file:
+    src: '{{ etcd_etcdctl_binary_file }}'
+    path: '{{ etcd_install_symlink_path }}/{{ etcd_etcdctl_binary_file_name }}'
+    state: link
+  when: etcd_install_create_symlink
