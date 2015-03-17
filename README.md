@@ -18,6 +18,7 @@ Role Variables
 | etcd_install | Boolean to define if installation should be done | true |
 | etcd_install_create_symlink | Boolean to define if symlinks to the binary files should be created | true |
 | etcd_install_symlink_path | Path where to create symlinks | /usr/local/bin |
+| etcd_install_version | Tag used for checkout | HEAD |
 | etcd_target_directory | Directory where to checkout Etcd and run the build command | ~/etcd |
 
 Dependencies
@@ -28,10 +29,11 @@ Git must be installed on the system.
 Example Playbook
 ----------------
 
-Install Etcd on local machine
+Install Etcd on local machine.
 
     - hosts: 127.0.0.1
       connection: local
+      sudo: yes
       roles:
          - { role: etcd }
 
