@@ -9,6 +9,7 @@
     repo: '{{ etcd_git_repository }}'
     dest: '{{ etcd_target_directory }}'
     update: true
+    version: '{{ etcd_install_version | default("HEAD") }}'
   register: etcd_git_result
 
 - name: Check if binary is build already
