@@ -35,7 +35,8 @@ By default the role does nothing because _etcd_build_ and _etcd_install_ are set
 | etcd_install_owner | String to define the binary owner | root |
 | etcd_install_group | String to define the binary group | root |
 | etcd_install_mode | String to define the binary mode | '0750' |
-| etcd_install_service | Boolean to define if SysV/Systemd service should be installed | false |
+| etcd_install_systemd_service | Boolean to define if Systemd service should be installed | false |
+| etcd_install_sysvinit_service | Boolean to define if SysVinit service should be installed | false |
 
 ## Etcd Cluster variables
 | Name | Description | Default value |
@@ -64,7 +65,8 @@ Install binaries into /usr/bin/{etcd,etcdctl}
         etcd_install: true
         etcd_install_path: /usr/bin
 
-Checkout and build Etcd locally but install binaries on etcd cluster nodes and setup an Etcd cluster named test.
+Checkout and build Etcd locally but install binaries on etcd cluster nodes and setup an Etcd cluster
+named test using Systemd.
 
     - hosts: 127.0.0.1
       gather_facts: false
@@ -80,7 +82,7 @@ Checkout and build Etcd locally but install binaries on etcd cluster nodes and s
         etcd_build_path: /tmp/etcd
         etcd_install: true
         etcd_install_path: /usr/bin
-        etcd_install_service: true
+        etcd_install_systemd_service: true
         etcd_cluster_name: test
 
 # License
