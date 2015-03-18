@@ -1,38 +1,41 @@
 ---
-- name: Ensure target directory exists
-  file:
-    dest: '{{ etcd_target_directory }}'
-    state: directory
+- name: Fetch binaries from build host
+  connection: local
+  delegate_to: '{{ etcd_build_host }}'
+  fetch:
+    src: '{{ item }}'
+    dest: /tmp
+  with_items:
+  - '{{ etcd_etcd_binary_file }}'
+  - '{{ etcd_etcdctl_binary_file }}'
 
-- name: Checkout Git repo
-  git:
-    repo: '{{ etcd_git_repository }}'
-    dest: '{{ etcd_target_directory }}'
-    update: true
-    version: '{{ etcd_install_version | default("HEAD") }}'
-  register: etcd_git_result
+- name: Ensure etcd binary
+  copy:
+    src: /tmp/{{ etcd_build_host }}/{{ etcd_etcd_binary_file }}
+    dest: '{{ etcd_install_path }}/{{ etcd_etcd_binary_file_name }}'
+    mode: '{{ etcd_install_mode }}'
+    owner: '{{ etcd_install_owner }}'
+    group: '{{ etcd_install_group }}'
 
-- name: Check if binary is build already
-  stat:
-    path: '{{ etcd_bin_directory }}/{{ etcd_etcd_binary_file_name }}'
-  register: etcd_binary_file
+- name: Ensure etcdctl binary
+  copy:
+    src: /tmp/{{ etcd_build_host }}/{{ etcd_etcdctl_binary_file }}
+    dest: '{{ etcd_install_path }}/{{ etcd_etcdctl_binary_file_name }}'
+    owner: '{{ etcd_install_owner }}'
+    group: '{{ etcd_install_group }}'
+    mode: '{{ etcd_install_mode }}'
 
-- name: Build binaries
-  shell: '{{ etcd_target_directory }}/build'
-  args:
-    chdir: '{{ etcd_target_directory }}'
-  when: not etcd_binary_file.stat.exists or etcd_git_result.changed
+- name: Ensure service file
+  template:
+    src: '{{ etcd_service_file_template }}'
+    dest: '{{ etcd_service_file_path }}/{{ etcd_service_file_name }}'
+    mode: '{{ etcd_service_file_mode }}'
+  tags: service
+  notify: restart etcd
 
-- name: Ensure symlink to etcd binary
-  file:
-    src: '{{ etcd_etcd_binary_file }}'
-    path: '{{ etcd_install_symlink_path }}/{{ etcd_etcd_binary_file_name }}'
-    state: link
-  when: etcd_install_create_symlink
-
-- name: Ensure symlink to etcdctl binary
-  file:
-    src: '{{ etcd_etcdctl_binary_file }}'
-    path: '{{ etcd_install_symlink_path }}/{{ etcd_etcdctl_binary_file_name }}'
-    state: link
-  when: etcd_install_create_symlink
+- name: Ensure service is running and configured to start on boot
+  service:
+    name: '{{ etcd_service_name }}'
+    state: '{{ etcd_service_state }}'
+    enabled: '{{ etcd_service_enabled }}'
+  tags: service
