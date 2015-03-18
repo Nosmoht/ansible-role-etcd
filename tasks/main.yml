@@ -8,5 +8,5 @@
   tags: install
 
 - include: service.yml
-  when: etcd_install_service
+  when: etcd_install_systemd_service or etcd_install_sysvinit_service
   tags: service
