@@ -8,7 +8,7 @@ etcd_build: false
 etcd_build_repo_url: https://github.com/coreos/etcd.git
 etcd_build_repo_update: false
 etcd_build_version_default: v2.0.5
-etcd_build_host: 127.0.0.1
+etcd_build_host: '{{ inventory_hostname }}'
 etcd_build_path: '{{ lookup(''env'', ''HOME'') }}/etcd'
 etcd_build_bin_path: '{{ etcd_build_path }}/bin'
 etcd_install: false
