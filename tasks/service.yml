@@ -1,5 +1,9 @@
 ---
-- include_vars: '{{ ansible_os_family }}{{ ansible_distribution_major_version }}.yml'
+- include_vars: systemd.yml
+  when: etcd_install_systemd_service
+
+- include_vars: sysvinit.yml
+  when: etcd_install_sysvinit_service
 
 - name: Ensure service file
   template:
