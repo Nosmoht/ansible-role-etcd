@@ -1,0 +1,20 @@
+[Unit]
+Description=Etcd Service
+
+[Service]
+PermissionsStartOnly=true
+Environment=ETCD_DATA_DIR={{ etcd_etcd_data_dir }}
+Environment=ETCD_NAME={{ ansible_hostname }}
+Environment=ETCD_LISTEN_PEER_URLS=http://0.0.0.0:7001
+Environment=ETCD_INITIAL_ADVERTISE_PEER_URLS=http://{{ ansible_hostname }}:7001
+Environment=ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:4001
+Environment=ETCD_ADVERTISE_CLIENT_URLS=http://{{ ansible_hostname }}:4001
+Environment=ETCD_INITIAL_CLUSTER=etcd-01=http://172.17.8.201:7001,etcd-02=http://172.17.8.202:7001,etcd-03=http://172.17.8.203:7001
+Environment=ETCD_INITIAL_CLUSTER_STATE=new
+
+ExecStart={{ etcd_install_path }}/{{ etcd_etcd_binary_file_name }} 
+Restart=always
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
