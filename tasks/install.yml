@@ -24,18 +24,3 @@
     owner: '{{ etcd_install_owner }}'
     group: '{{ etcd_install_group }}'
     mode: '{{ etcd_install_mode }}'
-
-- name: Ensure service file
-  template:
-    src: '{{ etcd_service_file_template }}'
-    dest: '{{ etcd_service_file_path }}/{{ etcd_service_file_name }}'
-    mode: '{{ etcd_service_file_mode }}'
-  tags: service
-  notify: restart etcd
-
-- name: Ensure service is running and configured to start on boot
-  service:
-    name: '{{ etcd_service_name }}'
-    state: '{{ etcd_service_state }}'
-    enabled: '{{ etcd_service_enabled }}'
-  tags: service
