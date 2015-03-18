@@ -3,7 +3,7 @@ Description=Etcd Service
 
 [Service]
 PermissionsStartOnly=true
-Environment=ETCD_DATA_DIR={{ etcd_etcd_data_dir }}
+Environment=ETCD_DATA_DIR={{ etcd_cluster_data_dir }}
 Environment=ETCD_NAME={{ ansible_hostname }}
 Environment=ETCD_LISTEN_PEER_URLS=http://0.0.0.0:7001
 Environment=ETCD_INITIAL_ADVERTISE_PEER_URLS=http://{{ ansible_hostname }}:7001
