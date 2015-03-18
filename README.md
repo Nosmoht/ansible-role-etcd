@@ -42,6 +42,7 @@ By default the role does nothing because _etcd_build_ and _etcd_install_ are set
 | Name | Description | Default value |
 |:-----  | :----- | :----- |
 | etcd_cluster_name | String to define the Etcd Cluster name | default |
+| etcd_cluster_data_dir  | String to define the directory where Etcd can store data | /var/lib/etcd |
 
 # Dependencies
 
