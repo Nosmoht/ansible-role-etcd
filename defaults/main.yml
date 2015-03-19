@@ -21,3 +21,4 @@ etcd_service_state: running
 etcd_service_enabled: true
 etcd_cluster_name: default
 etcd_cluster_data_dir: /var/lib/etcd
+etcd_key_default_state: present
