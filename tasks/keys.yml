@@ -1,0 +1,8 @@
+---
+- name: Ensure key value pair
+  etcd_key:
+    name: '{{ item.name }}'
+    value: '{{ item.value | default(None) }}'
+    state: '{{ item.state | default(etcd_key_default_state) }}'
+    etcd_host: '{{ etcd_host }}'
+  with_items: etcd_keys
