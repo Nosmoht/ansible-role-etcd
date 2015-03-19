@@ -10,3 +10,6 @@
 - include: service.yml
   when: etcd_install_systemd_service or etcd_install_sysvinit_service
   tags: service
+
+- include: keys.yml
+  when: etcd_keys is defined
