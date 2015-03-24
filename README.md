@@ -34,7 +34,8 @@ By default the role does nothing because _etcd_build_ and _etcd_install_ are set
 | etcd_install_path | String to define where binaries will be installed | /usr/bin |
 | etcd_install_owner | String to define the binary owner | root |
 | etcd_install_group | String to define the binary group | root |
-| etcd_install_mode | String to define the binary mode | '0750' |
+| etcd_install_mode | String to define the binary mode | '0755' |
+| etcd_install_sudo | Boolean to define if binary installation should be done with sudo. Set to true if installing binaries into a directory which is owned by root (like /usr/bin) | false |
 | etcd_install_systemd_service | Boolean to define if Systemd service should be installed | false |
 | etcd_install_sysvinit_service | Boolean to define if SysVinit service should be installed | false |
 
