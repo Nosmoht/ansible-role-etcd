@@ -10,6 +10,7 @@
   - '{{ etcd_etcdctl_binary_file }}'
 
 - name: Ensure etcd binary
+  sudo: '{{ etcd_install_sudo }}'
   copy:
     src: /tmp/{{ etcd_build_host }}/{{ etcd_etcd_binary_file }}
     dest: '{{ etcd_install_path }}/{{ etcd_etcd_binary_file_name }}'
@@ -18,6 +19,7 @@
     group: '{{ etcd_install_group }}'
 
 - name: Ensure etcdctl binary
+  sudo: '{{ etcd_install_sudo }}'
   copy:
     src: /tmp/{{ etcd_build_host }}/{{ etcd_etcdctl_binary_file }}
     dest: '{{ etcd_install_path }}/{{ etcd_etcdctl_binary_file_name }}'
