@@ -59,13 +59,14 @@ Checkout and build Etcd 2.0.5 on local machine in /tmp/etcd
         etcd_build_version: v2.0.5
         etcd_build_path: /tmp/etcd
 
-Install binaries into /usr/bin/{etcd,etcdctl}
+Install binaries which are build in $HOME/etcd/bin into /usr/bin/{etcd,etcdctl}
 
     - hosts: 127.0.0.1
       roles:
       - role: etcd
         etcd_install: true
         etcd_install_path: /usr/bin
+        etcd_install_sudo: true
 
 Checkout and build Etcd locally but install binaries on etcd cluster nodes and setup an Etcd cluster
 named test using Systemd.
@@ -78,7 +79,7 @@ named test using Systemd.
         etcd_build_path: /tmp/etcd
     - hosts: etcd-nodes
       gather_facts: true
-      sudo: true
+	  sudo: true
       roles:
       - role: etcd
         etcd_build_path: /tmp/etcd
