@@ -90,6 +90,7 @@ named test using Systemd.
     etcd_keys:
     - name: mykey
       value: myvalue
+      state: present
 ```
 
 # License
