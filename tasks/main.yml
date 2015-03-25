@@ -1,14 +1,14 @@
 ---
 - include: build.yml
   when: etcd_build
-  tags: build
+  tags: build|build
 
 - include: install.yml
   when: etcd_install
-  tags: install
+  tags: install|build
 
 - include: service.yml
-  when: etcd_install_systemd_service or etcd_install_sysvinit_service
+  when: etcd_install_systemd_service|bool or etcd_install_sysvinit_service|bool
   tags: service
 
 - include: keys.yml
