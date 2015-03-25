@@ -1,12 +1,10 @@
 ---
 - name: Ensure target directory exists
-  delegate_to: '{{ etcd_build_host }}'
   file:
     dest: '{{ etcd_build_path }}'
     state: directory
 
 - name: Checkout Git repo
-  delegate_to: '{{ etcd_build_host }}'
   git:
     repo: '{{ etcd_build_repo_url }}'
     dest: '{{ etcd_build_path }}'
@@ -15,15 +13,11 @@
   register: etcd_git_result
 
 - name: Check if binary is build already
-  delegate_to: '{{ etcd_build_host }}'
-  run_once: true
   stat:
     path: '{{ etcd_build_bin_path }}/{{ etcd_etcd_binary_file_name }}'
   register: etcd_binary_file
 
 - name: Build binaries
-  delegate_to: '{{ etcd_build_host }}'
-  run_once: true
   shell: '{{ etcd_build_path }}/build'
   args:
     chdir: '{{ etcd_build_path }}'

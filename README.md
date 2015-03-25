@@ -4,16 +4,15 @@ This role can be used to do the following tasks:
 - Checkout and build Etcd
 - Install binaries on a system
 - Setup an Etcd Cluster
-
-The process of checking out and building Etcd binaries can be delegated to another system, called _build host_.
-Therefore Git and Go must be installed on the _build host_.
+- Manage key/value pairs of in Etcd
 
 By default the role does nothing because _etcd_build_ and _etcd_install_ are set to false.
 
 # Requirements
 
 - Ansible >= 1.2
-- Git and Go must be installed on the _build host_
+- Git and Go must be installed
+- Requirements of [ansible-library-etcd] must be fulfilled if using variable __etcd_keys__.
 
 # Role Variables
 ## Build variables
@@ -24,50 +23,44 @@ By default the role does nothing because _etcd_build_ and _etcd_install_ are set
 | etcd_build_repo_url | String to define the Git repo URL | https://github.com/coreos/etcd.git |
 | etcd_build_repo_update | Boolean to define if update should be checked out | false |
 | etcd_build_version_default | String which equals the Git tag to checkout | v2.0.5 |
-| etcd_build_host | String to define the host where build tasks will be delegated to | 127.0.0.1 |
-| etcd_build_path | String to define a directory where the repository will be cloned into | '{{ lookup(''env'', ''HOME'') }}/etcd' |
+| etcd_build_path | String to define a directory where the repository will be cloned into | $HOME/etcd |
 
 ## Install variables
 | Name | Description | Default value |
 |:-----  | :----- | :----- |
 | etcd_install | Boolean to define if the installation should be done | false |
-| etcd_install_path | String to define where binaries will be installed | /usr/bin |
+| etcd_install_path | String to define where binaries will be installed | /usr/local/bin |
 | etcd_install_owner | String to define the binary owner | root |
 | etcd_install_group | String to define the binary group | root |
 | etcd_install_mode | String to define the binary mode | '0755' |
-| etcd_install_sudo | Boolean to define if binary installation should be done with sudo. Set to true if installing binaries into a directory which is owned by root (like /usr/bin) | false |
-| etcd_install_systemd_service | Boolean to define if Systemd service should be installed | false |
-| etcd_install_sysvinit_service | Boolean to define if SysVinit service should be installed | false |
 
 ## Etcd Cluster variables
 | Name | Description | Default value |
 |:-----  | :----- | :----- |
 | etcd_cluster_name | String to define the Etcd Cluster name | default |
 | etcd_cluster_data_dir  | String to define the directory where Etcd can store data | /var/lib/etcd |
+| etcd_install_systemd_service | Boolean to define if Systemd service should be installed | false |
+| etcd_install_sysvinit_service | Boolean to define if SysVinit service should be installed | false |
 
 # Dependencies
 
-
 # Example Playbook
 
-Checkout and build Etcd 2.0.5 on local machine in /tmp/etcd
-
-    - hosts: 127.0.0.1
-      roles:
-      - role: etcd
-        etcd_build: true
-        etcd_build_version: v2.0.5
-        etcd_build_path: /tmp/etcd
-
-Install binaries which are build in $HOME/etcd/bin into /usr/bin/{etcd,etcdctl}
-
-    - hosts: 127.0.0.1
-      roles:
-      - role: etcd
-        etcd_install: true
-        etcd_install_path: /usr/bin
-        etcd_install_sudo: true
-
+Checkout and build Etcd
+```
+- hosts: 127.0.0.1
+  roles:
+  - role: etcd
+    etcd_build: true
+```
+Install binaries which are build in $HOME/etcd/bin into /usr/local/bin/{etcd,etcdctl}
+```
+- hosts: 127.0.0.1
+  sudo: true
+  roles:
+  - role: etcd
+    etcd_install: true
+```
 Checkout and build Etcd locally but install binaries on etcd cluster nodes and setup an Etcd cluster
 named test using Systemd.
 
@@ -87,6 +80,17 @@ named test using Systemd.
         etcd_install_path: /usr/bin
         etcd_install_systemd_service: true
         etcd_cluster_name: test
+
+## Etcd Key/Values
+```
+---
+- hosts: 127.0.0.1
+  roles:
+  - role: etcd
+    etcd_keys:
+    - name: mykey
+      value: myvalue
+```
 
 # License
 

@@ -1,27 +1,15 @@
 ---
-- name: Fetch binaries from build host
-  connection: local
-  delegate_to: '{{ etcd_build_host }}'
-  fetch:
-    src: '{{ item }}'
-    dest: /tmp
-  with_items:
-  - '{{ etcd_etcd_binary_file }}'
-  - '{{ etcd_etcdctl_binary_file }}'
-
 - name: Ensure etcd binary
-  sudo: '{{ etcd_install_sudo }}'
   copy:
-    src: /tmp/{{ etcd_build_host }}/{{ etcd_etcd_binary_file }}
+    src: '{{ etcd_build_bin_path}}/{{ etcd_etcd_binary_file_name }}'
     dest: '{{ etcd_install_path }}/{{ etcd_etcd_binary_file_name }}'
     mode: '{{ etcd_install_mode }}'
     owner: '{{ etcd_install_owner }}'
     group: '{{ etcd_install_group }}'
 
 - name: Ensure etcdctl binary
-  sudo: '{{ etcd_install_sudo }}'
   copy:
-    src: /tmp/{{ etcd_build_host }}/{{ etcd_etcdctl_binary_file }}
+    src: '{{ etcd_build_bin_path }}/{{ etcd_etcdctl_binary_file_name }}'
     dest: '{{ etcd_install_path }}/{{ etcd_etcdctl_binary_file_name }}'
     owner: '{{ etcd_install_owner }}'
     group: '{{ etcd_install_group }}'
