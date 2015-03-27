@@ -101,4 +101,5 @@ BSD
 
 [Thomas Krahn]
 
+[ansible-library-etcd]: https://github.com/Nosmoht/ansible-library-etcd.git
 [Thomas Krahn]: mailto:ntbc@gmx.net
