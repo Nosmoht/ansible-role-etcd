@@ -4,5 +4,5 @@
     name: '{{ item.name }}'
     value: '{{ item.value | default(None) }}'
     state: '{{ item.state | default(etcd_key_default_state) }}'
-    etcd_host: '{{ etcd_host }}'
+    etcd_host: '{{ item.etcd_host | default(etcd_host) }}'
   with_items: etcd_keys
