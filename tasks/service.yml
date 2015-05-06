@@ -1,11 +1,21 @@
 ---
 - include_vars: systemd.yml
-  when: etcd_install_systemd_service
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
 
 - include_vars: sysvinit.yml
-  when: etcd_install_sysvinit_service
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int < 7
+
+- name: Ensure Etcd data dir
+  sudo: true
+  file:
+    name: '{{ etcd_cluster_data_dir }}'
+    state: directory
+    owner: '{{ etcd_install_owner }}'
+    group: '{{ etcd_install_group }}'
+    mode: '0775'
 
 - name: Ensure service file
+  sudo: true
   template:
     src: '{{ etcd_service_file_template }}'
     dest: '{{ etcd_service_file_path }}/{{ etcd_service_file_name }}'
@@ -13,6 +23,7 @@
   notify: restart etcd
 
 - name: Ensure service is running and configured to start on boot
+  sudo: true
   service:
     name: '{{ etcd_service_name }}'
     state: '{{ etcd_service_state }}'
