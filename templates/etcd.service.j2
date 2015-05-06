@@ -9,10 +9,10 @@ Environment=ETCD_LISTEN_PEER_URLS=http://0.0.0.0:7001
 Environment=ETCD_INITIAL_ADVERTISE_PEER_URLS=http://{{ ansible_hostname }}:7001
 Environment=ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:4001
 Environment=ETCD_ADVERTISE_CLIENT_URLS=http://{{ ansible_hostname }}:4001
-Environment=ETCD_INITIAL_CLUSTER=etcd-01=http://172.17.8.201:7001,etcd-02=http://172.17.8.202:7001,etcd-03=http://172.17.8.203:7001
+Environment=ETCD_INITIAL_CLUSTER={% for host in groups[etcd_cluster_group_name] %}{{ hostvars[host]['ansible_hostname'] }}=http://{{ hostvars[host]['ansible_default_ipv4']['address'] }}:7001,{% endfor %}
 Environment=ETCD_INITIAL_CLUSTER_STATE=new
 
-ExecStart={{ etcd_install_path }}/{{ etcd_etcd_binary_file_name }} 
+ExecStart={{ etcd_install_path }}/{{ etcd_etcd_binary_file_name }}
 Restart=always
 RestartSec=3s
 
