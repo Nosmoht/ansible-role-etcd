@@ -1,5 +1,6 @@
 ---
 - name: Ensure etcd binary
+  sudo: true
   copy:
     src: '{{ etcd_build_bin_path}}/{{ etcd_etcd_binary_file_name }}'
     dest: '{{ etcd_install_path }}/{{ etcd_etcd_binary_file_name }}'
@@ -8,6 +9,7 @@
     group: '{{ etcd_install_group }}'
 
 - name: Ensure etcdctl binary
+  sudo: true
   copy:
     src: '{{ etcd_build_bin_path }}/{{ etcd_etcdctl_binary_file_name }}'
     dest: '{{ etcd_install_path }}/{{ etcd_etcdctl_binary_file_name }}'
