@@ -7,7 +7,7 @@ This role can be used to do the following tasks on RHEL based systems:
 - Setup an Etcd Cluster
 - Manage create, update and delete key/value pairs in Etcd
 
-By default the role does nothing because __etcd_build__ and __etcd_install__ are set to false.
+By default the role does nothing because __etcd_build__, __etcd_install__ and __etcd_service__ are set to false.
 
 # Requirements
 
@@ -60,8 +60,8 @@ sudo password to Ansible when running your playbook.
 
 # Example Playbook
 
+## Checkout and build
 Checkout and build Etcd v2.0.10. Ensure all required packages are installed.
-
 ```yaml
 - hosts: 127.0.0.1
   roles:
@@ -70,7 +70,7 @@ Checkout and build Etcd v2.0.10. Ensure all required packages are installed.
     etcd_build_install_packages: true
     etcd_build_version: v2.0.10
 ```
-
+## Install binaries
 Install binaries which are build in $HOME/etcd/bin into /usr/local/bin/{etcd,etcdctl}
 
 ```yaml
@@ -80,8 +80,14 @@ Install binaries which are build in $HOME/etcd/bin into /usr/local/bin/{etcd,etc
   - role: etcd
     etcd_install: true
 ```
+## Setup an Etcd Cluster
 Checkout and build Etcd binaries on all members of group etcd-cluster. Setup an Etcd cluster
 named _test_ storing data in /var/lib/etcd.
+
+__Important__:
+Ensure to set __etcd_cluster_group_name__ to the group name used in your inventory file as the
+Jinja2 templates are using group variables to get the ip of each cluster member.
+
 ```yaml
 - hosts: etcd-cluster
   gather_facts: false
