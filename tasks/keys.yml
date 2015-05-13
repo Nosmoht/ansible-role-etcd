@@ -1,8 +1,16 @@
 ---
+- debug: var='{{ etcd_host }}:{{ etcd_port }}'
+
+- name: Waiting for Etcd endpoint to be available
+  wait_for:
+    host: '{{ etcd_host }}'
+    port: '{{ etcd_port }}'
+
 - name: Ensure key value pair
   etcd_key:
     name: '{{ item.name }}'
     value: '{{ item.value | default(None) }}'
     state: '{{ item.state | default(etcd_key_default_state) }}'
     etcd_host: '{{ item.etcd_host | default(etcd_host) }}'
+    etcd_port: '{{ item.etcd_port | default(etcd_port) }}'
   with_items: etcd_keys
