@@ -1,11 +1,15 @@
-Etcd
+Ansible role Etcd
 ==========
+
+# Table of Contents
+- [Description](#description)
+- [Requirements](#requirements)
+- [Role variables](#role variables)
 
 This role can be used to do the following tasks on RHEL based systems:
 - Checkout and build Etcd
 - Install binaries
 - Setup an Etcd Cluster
-- Manage create, update and delete key/value pairs in Etcd
 
 By default the role does nothing because __etcd_build__, __etcd_install__ and __etcd_service__ are set to false.
 
@@ -13,14 +17,13 @@ By default the role does nothing because __etcd_build__, __etcd_install__ and __
 
 - Ansible >= 1.2
 - To checkout and build binaries Git and Go must be installed. This will be done if parameter __etcd_build_install_packages__ is set to _true_.
-- If Key/Value pairs within an Etcd Cluster have to be managed the [ansible-library-etcd] must be available within your Ansible __library_path__.
 
-# Notes
 
 Some tasks are required to run with sudo. Ensure password less sudo access is possible or provide
 sudo password to Ansible when running your playbook.
 
-# Role Variables
+# Role variables
+
 ## Build variables
 
 | Name | Description | Default value |
@@ -35,6 +38,7 @@ sudo password to Ansible when running your playbook.
 
 
 ## Install variables
+
 | Name | Description | Default value |
 |:-----  | :----- | :----- |
 | etcd_install | Boolean to define if the installation should be done | false |
@@ -44,6 +48,7 @@ sudo password to Ansible when running your playbook.
 | etcd_install_mode | String to define the binary file mode | '0755' |
 
 ## Service variables
+
 | Name | Description | Default value |
 |:-----  | :----- | :----- |
 | etcd_service | Boolean to define if a service (sysvinit or systemd depending on ansible_distribution_major_version) should be installed | false |
@@ -52,16 +57,18 @@ sudo password to Ansible when running your playbook.
 | etcd_service_file_template | Filename of Jinja2 template to be used to generate the service file | (RHEL < 7) = etcd.init.j2, (RHEL >= 7) = etcd.service.j2
 
 ## Etcd Cluster variables
+
 | Name | Description | Default value |
 |:-----  | :----- | :----- |
 | etcd_cluster_name | String to define the Etcd Cluster name | default |
 | etcd_cluster_data_dir  | String to define the directory where Etcd can store data | /var/lib/etcd |
 | etcd_cluster_group_name | Name of Ansible host group which contains the Cluster members | null |
 
-# Example Playbook
+# Examples
 
 ## Checkout and build
 Checkout and build Etcd v2.0.10. Ensure all required packages are installed.
+
 ```yaml
 - hosts: 127.0.0.1
   roles:
@@ -100,24 +107,22 @@ Jinja2 templates are using group variables to get the ip of each cluster member.
     etcd_cluster_data_dir: /var/lib/etcd
     etcd_cluster_group_name: etcd-cluster
 ```
-## Etcd Key/Values
-Requires [ansible-library-etcd] to be in Ansible's __library_path__.
-```yaml
-- hosts: 127.0.0.1
-  connection: local
-  gather_facts: false
-  roles:
-  - role: etcd
-    etcd_keys:
-    - name: mykey
-      value: myvalue
-      state: present
-      etcd_host: etcd.example.com
-```
 
 # License
 
-BSD
+Copyright 2015 Thomas Krahn
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 # Author Information
 
