@@ -1,8 +1,4 @@
 ---
-- include: build.yml
-  when: etcd_build|bool
-  tags: etcd_build
-
 - include: install.yml
   when: etcd_install|bool
   tags: etcd_install
@@ -10,7 +6,3 @@
 - include: service.yml
   when: etcd_service|bool
   tags: etcd_service
-
-- include: keys.yml
-  when: etcd_keys is defined
-  tags: etcd_keys
