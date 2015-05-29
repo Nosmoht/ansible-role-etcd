@@ -14,7 +14,7 @@ By default the role does nothing because __etcd_install__ and __etcd_service__ a
 
 # Requirements
 
-- Ansible >= 1.2
+- Ansible >= 1.9
 
 # Role variables
 
@@ -52,7 +52,7 @@ By default the role does nothing because __etcd_install__ and __etcd_service__ a
 # Examples
 
 ## Download and install binaries
-Install binaries which are build in $HOME/etcd/bin into /usr/local/bin/{etcd,etcdctl}
+Download and install binaries into /usr/local/bin/{etcd,etcdctl}
 
 ```yaml
 - hosts: 127.0.0.1
