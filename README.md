@@ -7,40 +7,25 @@ Ansible role Etcd
 - [Role variables](#role variables)
 
 This role can be used to do the following tasks on RHEL based systems:
-- Checkout and build Etcd
-- Install binaries
+- Install etcd and etcdctl binary
 - Setup an Etcd Cluster
 
-By default the role does nothing because __etcd_build__, __etcd_install__ and __etcd_service__ are set to false.
+By default the role does nothing because __etcd_install__ and __etcd_service__ are set to false.
 
 # Requirements
 
 - Ansible >= 1.2
-- To checkout and build binaries Git and Go must be installed. This will be done if parameter __etcd_build_install_packages__ is set to _true_.
-
-
-Some tasks are required to run with sudo. Ensure password less sudo access is possible or provide
-sudo password to Ansible when running your playbook.
 
 # Role variables
 
-## Build variables
-
-| Name | Description | Default value |
-|:-----  | :----- | :----- |
-| etcd_build | Boolean to define if binaries should be build | false |
-| etcd_build_repo_url | String to define the Git repo URL | https://github.com/coreos/etcd.git |
-| etcd_build_repo_update | Boolean to define if an update should be done on checkout | false |
-| etcd_build_version_default | String which equals the Git tag to checkout | v2.0.5 |
-| etcd_build_path | String to define a directory where the repository will be cloned in | $HOME/etcd |
-| etcd_build_packages | List of package names to install | git, go |
-| etcd_build_install_packages | Boolean to define if packages which are required to checkout and build the binaries have to be installed | true |
-
-
 ## Install variables
-
 | Name | Description | Default value |
 |:-----  | :----- | :----- |
+| etcd_version | Version to install | v2.0.10 |
+| etcd_package_name | Name of Etcd package | etcd-{{ etcd_version }}-linux-amd64 |
+| etcd_package_file | Filename of tar.gz containing pre-compiled binaries | {{ etcd_package_name }}.tar.gz |
+| etcd_url | URL the package will be downloaded from | https://github.com/coreos/etcd/releases/download/ |
+| etcd_download_path | Path where to download tar.gz package | /tmp |
 | etcd_install | Boolean to define if the installation should be done | false |
 | etcd_install_path | String to define where binaries will be installed | /usr/local/bin |
 | etcd_install_owner | String to define the binary and data dir owner | root |
@@ -66,29 +51,21 @@ sudo password to Ansible when running your playbook.
 
 # Examples
 
-## Checkout and build
-Checkout and build Etcd v2.0.10. Ensure all required packages are installed.
-
-```yaml
-- hosts: 127.0.0.1
-  roles:
-  - role: etcd
-    etcd_build: true
-    etcd_build_install_packages: true
-    etcd_build_version: v2.0.10
-```
-## Install binaries
+## Download and install binaries
 Install binaries which are build in $HOME/etcd/bin into /usr/local/bin/{etcd,etcdctl}
 
 ```yaml
 - hosts: 127.0.0.1
-  sudo: true
+  become: true
+  become_user: root
+  become_method: sudo
   roles:
   - role: etcd
     etcd_install: true
 ```
+
 ## Setup an Etcd Cluster
-Checkout and build Etcd binaries on all members of group etcd-cluster. Setup an Etcd cluster
+Download and install Etcd binaries on all members of group etcd-cluster. Setup an Etcd cluster
 named _test_ storing data in /var/lib/etcd.
 
 __Important__:
@@ -100,7 +77,6 @@ Jinja2 templates are using group variables to get the ip of each cluster member.
   gather_facts: false
   roles:
   - role: etcd
-    etcd_build: true
     etcd_install: true
     etcd_service: true
     etcd_cluster_name: test
@@ -128,5 +104,4 @@ limitations under the License.
 
 [Thomas Krahn]
 
-[ansible-library-etcd]: https://github.com/Nosmoht/ansible-library-etcd.git
 [Thomas Krahn]: mailto:ntbc@gmx.net
